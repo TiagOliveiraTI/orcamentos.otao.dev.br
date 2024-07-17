@@ -1,6 +1,6 @@
 name: 🚀 Deploy orcamentos.otao.dev.br
 on:
-  push:
+  pull_request:
     branches:
       - main
 
