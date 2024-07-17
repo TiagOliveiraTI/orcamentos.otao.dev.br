@@ -13,7 +13,7 @@ jobs:
 
       - name: Deploy para Hostgator
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-        env:
+        with:
           server: ${{ secrets.REMOTE_HOST }}
           username: ${{ secrets.REMOTE_USER }}
           password: ${{ secrets.REMOTE_PASSWORD }}
