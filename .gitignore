@@ -3,4 +3,5 @@
 /coverage/
 .scannerwork/
 .env
-sonar-project.properties
+sonar-project.properties.local
+
