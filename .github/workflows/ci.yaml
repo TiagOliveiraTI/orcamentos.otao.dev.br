@@ -39,6 +39,7 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+          LC_ALL: "pt_BR.UTF-8"
 
   build:
     needs: running_unit_tests
