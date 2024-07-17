@@ -1,6 +1,7 @@
 {
     "name": "otaodev/orcamentos",
     "description": "Sistema para gerar Orçcamentos",
+    "license": "proprietary",
     "type": "project",
     "autoload": {
         "psr-4": {
