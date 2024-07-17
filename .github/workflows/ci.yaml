@@ -1,4 +1,4 @@
-name: Deploy orcamentos.otao.dev.br
+name: 🚀 Deploy orcamentos.otao.dev.br
 on:
   push:
     branches:
@@ -6,12 +6,17 @@ on:
 
 jobs:
   build:
+    name: 🎉 Deploy
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout do repositorio
-        uses: actions/checkout@v2
+      - name: 🚚 Checkout do repositorio
+        uses: actions/checkout@v4
 
-      - name: Deploy para Hostgator
+      - name: 🔨 Build Project
+        run: |
+          composer install
+
+      - name: 📂 Deploy para Hostgator
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.REMOTE_HOST }}
