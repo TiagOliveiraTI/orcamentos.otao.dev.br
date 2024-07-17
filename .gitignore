@@ -1,2 +1,6 @@
 /vendor/
 *.log
+/coverage/
+.scannerwork/
+.env
+sonar-project.properties
