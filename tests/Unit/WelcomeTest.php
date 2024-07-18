@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests;
+namespace Tests\Unit;
 
 use Otaodev\Orcamentos\Welcome;
 use PHPUnit\Framework\Attributes\CoversClass;

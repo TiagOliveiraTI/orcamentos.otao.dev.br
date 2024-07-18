@@ -5,7 +5,8 @@
     "type": "project",
     "autoload": {
         "psr-4": {
-            "Otaodev\\Orcamentos\\": "src/"
+            "Otaodev\\Orcamentos\\": "src/",
+            "Core\\": "src/Core/"
         }
     },
     "autoload-dev": {
