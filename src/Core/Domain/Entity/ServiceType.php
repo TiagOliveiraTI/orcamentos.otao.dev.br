@@ -5,20 +5,21 @@ declare(strict_types=1);
 namespace Core\Domain\Entity;
 
 use Core\Domain\Entity\Traits\MagicMethodsTrait;
-use Core\Domain\Exception\EntityValidationException;
+
 use Core\Domain\Validation\DomainValidation;
 
 class ServiceType
 {
     private DomainValidation $domainValidation;
+
     use MagicMethodsTrait;
 
     public function __construct(
-        protected string $id = '',
-        protected string $name = '',
-        protected string $description = '',
-        protected float $baseCoast = 0,
-        protected bool $isActive = true,
+        private string $id = '',
+        private string $name = '',
+        private string $description = '',
+        private float $baseCoast = 0,
+        private bool $isActive = true,
     ) {
         $this->domainValidation = new DomainValidation();
 
@@ -35,7 +36,7 @@ class ServiceType
         $this->isActive = false;
     }
 
-    public function update(string $name, string $description = '', float $baseCoast = 0): void
+    public function update(string $name, float $baseCoast, string $description = ''): void
     {
         $this->name = $name;
         $this->description = $description;
@@ -44,10 +45,13 @@ class ServiceType
         $this->validate();
     }
 
-    public function validate()
+    private function validate()
     {
-        $this->domainValidation->notNull($this->name)
+        $this->domainValidation
+            ->notNull($this->name)
+            ->strMinLength($this->name, 3)
             ->strMaxLength($this->name, 20)
-            ->strMinLength($this->name, 2);
+            ->coastMinValue($this->baseCoast)
+        ;
     }
 }
