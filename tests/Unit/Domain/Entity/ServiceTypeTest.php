@@ -33,7 +33,6 @@ class ServiceTypeTest extends TestCase
         $this->expectExceptionMessage('Property nonExistingProperty not found in class Core\Domain\Entity\ServiceType!');
 
         $serviceType = new ServiceType(
-            id: 'any_id',
             name: 'nome_servico',
             description: 'Novo tipo de serviço',
             baseCoast: 3.99,
@@ -41,5 +40,30 @@ class ServiceTypeTest extends TestCase
         );
         
         $serviceType->__get('nonExistingProperty');
+    }
+
+    public function testActivated(): void
+    {
+        $serviceType = new ServiceType(
+            name: 'nome_servico',
+            isActive: false
+        );
+
+        $this->assertFalse($serviceType->isActive);
+        $serviceType->activate();
+        $this->assertTrue($serviceType->isActive);
+
+    }
+
+    public function testDisabled(): void
+    {
+        $serviceType = new ServiceType(
+            name: 'nome_servico',
+        );
+
+        $this->assertTrue($serviceType->isActive);
+        $serviceType->disable();
+        $this->assertFalse($serviceType->isActive);
+        
     }
 }
