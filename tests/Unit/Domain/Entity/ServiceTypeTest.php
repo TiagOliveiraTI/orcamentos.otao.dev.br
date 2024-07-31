@@ -7,9 +7,10 @@ use PHPUnit\Framework\TestCase;
 use Core\Domain\Entity\ServiceType;
 use PHPUnit\Framework\Attributes\CoversClass;
 use Core\Domain\Exception\EntityValidationException;
-
+use Core\Domain\Validation\DomainValidation;
 
 #[CoversClass(ServiceType::class)]
+#[CoversClass(DomainValidation::class)]
 #[CoversClass(EntityValidationException::class)]
 class ServiceTypeTest extends TestCase
 {
@@ -95,7 +96,7 @@ class ServiceTypeTest extends TestCase
     public function testExceptionEmptyName(): void
     {
         $this->expectException(EntityValidationException::class);
-        $this->expectExceptionMessage('Name cannot be empty!');
+        $this->expectExceptionMessage('Should not be empty');
 
         new ServiceType(
             name: '',
@@ -107,7 +108,7 @@ class ServiceTypeTest extends TestCase
         $serviceType = new ServiceType(name: 'Valid Name');
 
         $this->expectException(EntityValidationException::class);
-        $this->expectExceptionMessage('Name cannot be empty!');
+        $this->expectExceptionMessage('Should not be empty');
 
         $serviceType->update('');
     }
@@ -115,7 +116,7 @@ class ServiceTypeTest extends TestCase
     public function testInvalidNameTooShort()
     {
         $this->expectException(EntityValidationException::class);
-        $this->expectExceptionMessage('Name is invalid!');
+        $this->expectExceptionMessage('The min length allowed is 2');
 
         new ServiceType(name: 'ab');
     }
@@ -123,7 +124,7 @@ class ServiceTypeTest extends TestCase
     public function testInvalidNameTooLong()
     {
         $this->expectException(EntityValidationException::class);
-        $this->expectExceptionMessage('Name is invalid!');
+        $this->expectExceptionMessage('The max length allowed is 20');
 
         new ServiceType(name: str_repeat('a', 31));
     }
