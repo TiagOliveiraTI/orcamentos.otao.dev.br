@@ -2,13 +2,15 @@
 
 namespace Tests\Unit\Domain\Entity;
 
-use Core\Domain\Entity\ServiceType;
 use DomainException;
-use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Core\Domain\Entity\ServiceType;
+use PHPUnit\Framework\Attributes\CoversClass;
+use Core\Domain\Exception\EntityValidationException;
 
 
 #[CoversClass(ServiceType::class)]
+#[CoversClass(EntityValidationException::class)]
 class ServiceTypeTest extends TestCase
 {
     public function testAttributes(): void
@@ -88,5 +90,41 @@ class ServiceTypeTest extends TestCase
 
         $this->assertSame('new_name', $serviceType->name);
         $this->assertSame('new_description', $serviceType->description);
+    }
+
+    public function testExceptionEmptyName(): void
+    {
+        $this->expectException(EntityValidationException::class);
+        $this->expectExceptionMessage('Name cannot be empty!');
+
+        new ServiceType(
+            name: '',
+        );
+    }
+
+    public function testValidationOnUpdate()
+    {
+        $serviceType = new ServiceType(name: 'Valid Name');
+
+        $this->expectException(EntityValidationException::class);
+        $this->expectExceptionMessage('Name cannot be empty!');
+
+        $serviceType->update('');
+    }
+
+    public function testInvalidNameTooShort()
+    {
+        $this->expectException(EntityValidationException::class);
+        $this->expectExceptionMessage('Name is invalid!');
+
+        new ServiceType(name: 'ab');
+    }
+
+    public function testInvalidNameTooLong()
+    {
+        $this->expectException(EntityValidationException::class);
+        $this->expectExceptionMessage('Name is invalid!');
+
+        new ServiceType(name: str_repeat('a', 31));
     }
 }
