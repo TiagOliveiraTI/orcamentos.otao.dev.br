@@ -1,8 +1,8 @@
 name: 🚀 Deploy orcamentos.otao.dev.br
 on:
-  pull_request:
+  push:
     branches:
-      - main
+      - "main"
   workflow_dispatch:
 
 jobs:
