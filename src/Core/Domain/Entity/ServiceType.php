@@ -29,4 +29,11 @@ class ServiceType
     {
         $this->isActive = false;
     }
+
+    public function update(string $name, string $description = '', float $baseCoast = 0): void
+    {
+        $this->name = $name;
+        $this->description = $description;
+        $this->baseCoast = $baseCoast;
+    }
 }
