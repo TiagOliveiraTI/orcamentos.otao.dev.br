@@ -6,9 +6,11 @@ namespace Core\Domain\Entity;
 
 use Core\Domain\Entity\Traits\MagicMethodsTrait;
 use Core\Domain\Exception\EntityValidationException;
+use Core\Domain\Validation\DomainValidation;
 
 class ServiceType
 {
+    private DomainValidation $domainValidation;
     use MagicMethodsTrait;
 
     public function __construct(
@@ -18,6 +20,8 @@ class ServiceType
         protected float $baseCoast = 0,
         protected bool $isActive = true,
     ) {
+        $this->domainValidation = new DomainValidation();
+
         $this->validate();
     }
 
@@ -42,12 +46,8 @@ class ServiceType
 
     public function validate()
     {
-        if (empty($this->name)) {
-            throw new EntityValidationException('Name cannot be empty!');
-        }
-
-        if (strlen($this->name) < 3 || strlen($this->name) > 30) {
-            throw new EntityValidationException('Name is invalid!');
-        }
+        $this->domainValidation->notNull($this->name)
+            ->strMaxLength($this->name, 20)
+            ->strMinLength($this->name, 2);
     }
 }
