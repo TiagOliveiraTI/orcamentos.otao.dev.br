@@ -11,53 +11,76 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(EntityValidationException::class)]
 class DomainValidationTest extends TestCase
 {
-    public function testIfNotNullWithoutMessage()
+    private DomainValidation $validator;
+
+    protected function setUp(): void
+    {
+        $this->validator = new DomainValidation();
+    }
+
+    public function testNotNullWithValidValue(): void
+    {
+        $result = $this->validator->notNull('valid');
+        $this->assertSame($this->validator, $result);
+    }
+
+    public function testNotNullWithEmptyValue(): void
     {
         $this->expectException(EntityValidationException::class);
         $this->expectExceptionMessage('Should not be empty');
-
-        $domainValidation = new DomainValidation();
-        $value = '';
-
-        $domainValidation->notNull($value);
-
+        $this->validator->notNull('');
     }
 
-    public function testIfNotNull()
+    public function testNotNullWithCustomExceptionMessage(): void
     {
         $this->expectException(EntityValidationException::class);
-        $this->expectExceptionMessage('any_message');
-
-        $domainValidation = new DomainValidation();
-        $value = '';
-
-        $domainValidation->notNull($value, 'any_message');
-
+        $this->expectExceptionMessage('Custom exception message');
+        $this->validator->notNull('', 'Custom exception message');
     }
 
-    public function testStrMaxLength()
+    public function testStrMaxLengthWithValidValue(): void
     {
-        $domainValidation = new DomainValidation();
-        $value = str_repeat('a', 21);
-        $maxLength = 20;
-
-        $this->expectException(EntityValidationException::class);
-        $this->expectExceptionMessage("The max length allowed is $maxLength");
-
-        $domainValidation->strMaxLength($value, $maxLength);
-
+        $result = $this->validator->strMaxLength('valid', 5);
+        $this->assertSame($this->validator, $result);
     }
 
-    public function testStrMinLength()
+    public function testStrMaxLengthWithExceededLength(): void
     {
-        $domainValidation = new DomainValidation();
-        $value = str_repeat('a', 2);
-        $minLength = 3;
-
         $this->expectException(EntityValidationException::class);
-        $this->expectExceptionMessage("The min length allowed is $minLength");
+        $this->expectExceptionMessage('The max length allowed is 5');
+        $this->validator->strMaxLength('exceeded', 5);
+    }
 
-        $domainValidation->strMinLength($value, $minLength);
+    public function testStrMinLengthWithValidValue(): void
+    {
+        $result = $this->validator->strMinLength('oi', 2);
+        $this->assertSame($this->validator, $result);
+    }
 
+    public function testStrMinLengthWithShortValue(): void
+    {
+        $this->expectException(EntityValidationException::class);
+        $this->expectExceptionMessage('The min length allowed is 3');
+        $this->validator->strMinLength('ab', 3);
+    }
+
+    public function testCoastMinValueWithValidValue(): void
+    {
+        $result = $this->validator->coastMinValue(10.0, 5.0);
+        $this->assertSame($this->validator, $result);
+    }
+
+    public function testCoastMinValueWithNegativeValue(): void
+    {
+        $this->expectException(EntityValidationException::class);
+        $this->expectExceptionMessage('The base coast cannot be less than 0');
+        $this->validator->coastMinValue(-1.0, 5.0);
+    }
+
+    public function testCoastMinValueWithLessThanMinValue(): void
+    {
+        $this->expectException(EntityValidationException::class);
+        $this->expectExceptionMessage('The base coast cannot be less than 5');
+        $this->validator->coastMinValue(3.0, 5.0);
     }
 }

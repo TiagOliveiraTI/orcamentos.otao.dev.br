@@ -45,6 +45,36 @@ class ServiceTypeTest extends TestCase
         $serviceType->__get('nonExistingProperty');
     }
 
+    public function testServiceTypeInitializationWithDefaultValues(): void
+    {
+        $serviceType = new ServiceType(name: 'ServiceName');
+
+        $this->assertEmpty($serviceType->id);
+        $this->assertEquals('ServiceName', $serviceType->name);
+        $this->assertEmpty($serviceType->description);
+        $this->assertEquals(0, $serviceType->baseCoast);
+        $this->assertTrue($serviceType->isActive);
+    }
+
+    public function testServiceTypeInitializationWithCustomValues(): void
+    {
+        $serviceType = new ServiceType('123', 'ServiceName', 'Description', 10.5, false);
+
+        $this->assertEquals('123', $serviceType->id);
+        $this->assertEquals('ServiceName', $serviceType->name);
+        $this->assertEquals('Description', $serviceType->description);
+        $this->assertEquals(10.5, $serviceType->baseCoast);
+        $this->assertFalse($serviceType->isActive);
+    }
+
+    public function testInvalidBaseCoastShouldThrowException(): void
+    {
+        $this->expectException(EntityValidationException::class);
+        $this->expectExceptionMessage('The base coast cannot be less than 0');
+
+        new ServiceType('123', 'ServiceName', 'Description', -10.5, true);
+    }
+
     public function testActivated(): void
     {
         $serviceType = new ServiceType(
@@ -91,6 +121,7 @@ class ServiceTypeTest extends TestCase
 
         $this->assertSame('new_name', $serviceType->name);
         $this->assertSame('new_description', $serviceType->description);
+        $this->assertSame(10.5, $serviceType->baseCoast);
     }
 
     public function testExceptionEmptyName(): void
@@ -110,13 +141,13 @@ class ServiceTypeTest extends TestCase
         $this->expectException(EntityValidationException::class);
         $this->expectExceptionMessage('Should not be empty');
 
-        $serviceType->update('');
+        $serviceType->update(name: '', baseCoast: 0);
     }
 
     public function testInvalidNameTooShort()
     {
         $this->expectException(EntityValidationException::class);
-        $this->expectExceptionMessage('The min length allowed is 2');
+        $this->expectExceptionMessage('The min length allowed is 3');
 
         new ServiceType(name: 'ab');
     }
@@ -128,4 +159,16 @@ class ServiceTypeTest extends TestCase
 
         new ServiceType(name: str_repeat('a', 31));
     }
+
+    public function testShouldThrowExceptionIfBaseCoastIsLessThan0()
+    {
+        $serviceType = new ServiceType(name: 'Nome do Serviço');
+
+        $this->expectException(EntityValidationException::class);
+        $this->expectExceptionMessage('The base coast cannot be less than 0');
+    
+        $serviceType->update(name: 'Nome do Serviço', description: 'Descrição', baseCoast: -10);
+    }
+
+
 }
