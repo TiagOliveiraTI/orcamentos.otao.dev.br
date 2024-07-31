@@ -66,4 +66,27 @@ class ServiceTypeTest extends TestCase
         $this->assertFalse($serviceType->isActive);
         
     }
+
+    public function testUpdate(): void
+    {
+        $uuid = 'uuid.value';
+
+        $serviceType = new ServiceType(
+            id: $uuid,
+            name: 'nome_servico',
+            description: 'Novo tipo de serviço',
+            baseCoast: 3.99,
+            isActive: true,
+        );
+
+
+        $serviceType->update(
+            name: 'new_name',
+            description: 'new_description',
+            baseCoast: 10.5,
+        );
+
+        $this->assertSame('new_name', $serviceType->name);
+        $this->assertSame('new_description', $serviceType->description);
+    }
 }
