@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    needs:  deploy_to_hostgator
+    needs: running_unit_tests
     name: 🎉 Deploy
     runs-on: ubuntu-latest
     steps:
