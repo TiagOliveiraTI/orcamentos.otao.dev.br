@@ -1,4 +1,4 @@
-from diagrams import Diagram, Cluster
+from diagrams import Diagram, Cluster, Edge
 from diagrams.programming.framework import Laravel
 from diagrams.programming.flowchart import Action
 
@@ -9,6 +9,9 @@ with Diagram("Arquitetura Atual"):
                 serviceType = Action("ServiceType")
 
             with Cluster("ValueObject"):
-                uuid = Action("Uuid")
+                uuid = Action("Uuid")       
 
-                uuid >> serviceType
+            with Cluster("Repository"):
+                serviceTypeRepositoryInterface = Action("ServiceTypeRepositoryInterface")
+
+            uuid >> serviceType 
