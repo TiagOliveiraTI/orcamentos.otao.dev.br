@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Core\Domain\Entity;
 
 use Core\Domain\Entity\Traits\MagicMethodsTrait;
-
 use Core\Domain\Validation\DomainValidation;
+use Core\Domain\ValueObject\Uuid;
 
 class ServiceType
 {
@@ -15,14 +15,14 @@ class ServiceType
     use MagicMethodsTrait;
 
     public function __construct(
-        private string $id = '',
+        private Uuid|string $id = '',
         private string $name = '',
         private string $description = '',
         private float $baseCoast = 0,
         private bool $isActive = true,
     ) {
         $this->domainValidation = new DomainValidation();
-
+        $this->id = $this->id ? new Uuid($this->id) : Uuid::random();
         $this->validate();
     }
 
