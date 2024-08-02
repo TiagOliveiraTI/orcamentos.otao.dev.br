@@ -8,10 +8,12 @@ use Core\Domain\Entity\ServiceType;
 use PHPUnit\Framework\Attributes\CoversClass;
 use Core\Domain\Exception\EntityValidationException;
 use Core\Domain\Validation\DomainValidation;
+use Core\Domain\ValueObject\Uuid;
 
 #[CoversClass(ServiceType::class)]
 #[CoversClass(DomainValidation::class)]
 #[CoversClass(EntityValidationException::class)]
+#[CoversClass(Uuid::class)]
 class ServiceTypeTest extends TestCase
 {
     public function testAttributes(): void
@@ -49,7 +51,7 @@ class ServiceTypeTest extends TestCase
     {
         $serviceType = new ServiceType(name: 'ServiceName');
 
-        $this->assertEmpty($serviceType->id);
+        $this->assertNotEmpty($serviceType->id);
         $this->assertEquals('ServiceName', $serviceType->name);
         $this->assertEmpty($serviceType->description);
         $this->assertEquals(0, $serviceType->baseCoast);
@@ -58,9 +60,11 @@ class ServiceTypeTest extends TestCase
 
     public function testServiceTypeInitializationWithCustomValues(): void
     {
-        $serviceType = new ServiceType('123', 'ServiceName', 'Description', 10.5, false);
+        $uuid = (string) Uuid::random()->__toString();
 
-        $this->assertEquals('123', $serviceType->id);
+        $serviceType = new ServiceType($uuid, 'ServiceName', 'Description', 10.5, false);
+
+        $this->assertEquals($uuid, $serviceType->id);
         $this->assertEquals('ServiceName', $serviceType->name);
         $this->assertEquals('Description', $serviceType->description);
         $this->assertEquals(10.5, $serviceType->baseCoast);
@@ -72,7 +76,9 @@ class ServiceTypeTest extends TestCase
         $this->expectException(EntityValidationException::class);
         $this->expectExceptionMessage('The base coast cannot be less than 0');
 
-        new ServiceType('123', 'ServiceName', 'Description', -10.5, true);
+        $uuid = (string) Uuid::random()->__toString();
+
+        new ServiceType($uuid, 'ServiceName', 'Description', -10.5, true);
     }
 
     public function testActivated(): void
@@ -102,7 +108,7 @@ class ServiceTypeTest extends TestCase
 
     public function testUpdate(): void
     {
-        $uuid = 'uuid.value';
+        $uuid = (string) Uuid::random()->__toString();
 
         $serviceType = new ServiceType(
             id: $uuid,
@@ -169,6 +175,5 @@ class ServiceTypeTest extends TestCase
     
         $serviceType->update(name: 'Nome do Serviço', description: 'Descrição', baseCoast: -10);
     }
-
 
 }
