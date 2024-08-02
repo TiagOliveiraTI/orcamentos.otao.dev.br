@@ -2,13 +2,14 @@
 
 namespace Tests\Unit\Domain\Entity;
 
+use DateTime;
 use DomainException;
 use PHPUnit\Framework\TestCase;
+use Core\Domain\ValueObject\Uuid;
 use Core\Domain\Entity\ServiceType;
+use Core\Domain\Validation\DomainValidation;
 use PHPUnit\Framework\Attributes\CoversClass;
 use Core\Domain\Exception\EntityValidationException;
-use Core\Domain\Validation\DomainValidation;
-use Core\Domain\ValueObject\Uuid;
 
 #[CoversClass(ServiceType::class)]
 #[CoversClass(DomainValidation::class)]
@@ -52,6 +53,7 @@ class ServiceTypeTest extends TestCase
         $serviceType = new ServiceType(name: 'ServiceName');
 
         $this->assertNotEmpty($serviceType->id);
+        $this->assertNotEmpty($serviceType->createdAt());
         $this->assertEquals('ServiceName', $serviceType->name);
         $this->assertEmpty($serviceType->description);
         $this->assertEquals(0, $serviceType->baseCoast);
@@ -116,6 +118,7 @@ class ServiceTypeTest extends TestCase
             description: 'Novo tipo de serviço',
             baseCoast: 3.99,
             isActive: true,
+            createdAt: '2024-08-02 12:12:12'
         );
 
 
@@ -174,6 +177,15 @@ class ServiceTypeTest extends TestCase
         $this->expectExceptionMessage('The base coast cannot be less than 0');
     
         $serviceType->update(name: 'Nome do Serviço', description: 'Descrição', baseCoast: -10);
+    }
+
+    public function testServiceTypeCreationWithValidCreatedAt(): void
+    {
+        $createdAt = '2023-01-01 00:00:00';
+        $serviceType = new ServiceType(Uuid::random()->__toString(), 'Service Name', 'Service Description', 100.0, true, $createdAt);
+
+        $this->assertInstanceOf(DateTime::class, $serviceType->createdAt);
+        $this->assertEquals($createdAt, $serviceType->createdAt->format('Y-m-d H:i:s'));
     }
 
 }
