@@ -9,7 +9,7 @@ use Core\Domain\Repository\ServiceTypeRepositoryInterface;
 use Core\UseCase\DTO\ServiceType\ServiceTypeCreateInputDto;
 use Core\UseCase\DTO\ServiceType\ServiceTypeCreateOutputDto;
 
-class CreateServiceTypeUseCase 
+class CreateServiceTypeUseCase
 {
     public function __construct(
         private ServiceTypeRepositoryInterface $serviceTypeRepositoryInterface
