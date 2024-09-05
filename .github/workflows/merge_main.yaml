@@ -17,6 +17,13 @@ jobs:
         working-directory: ./
         run: cp .env.example .env && echo APP_ENV=prod >> .env
 
+      - name: Setup Database Connection
+        working-directory: ./
+        run: | 
+          echo DB_DATABASE=${{ secrets.DB_DATABASE }} >> .env
+          echo DB_USERNAME=${{ secrets.DB_USERNAME }} >> .env
+          echo DB_PASSWORD=${{ secrets.DB_PASSWORD }} >> .env
+
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
@@ -34,7 +41,7 @@ jobs:
 
       - name: Running Artisan commands
         working-directory: ./
-        run: php artisan key:generate
+        run: php artisan key:generate && php artisan migrate
 
       - name: 📂 Deploy para Hostgator
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
