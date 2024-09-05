@@ -30,6 +30,10 @@ jobs:
         working-directory: ./
         run: composer validate --strict
 
+      - name: Running Artisan commands
+        working-directory: ./
+        run: php artisan key:generate
+
       - name: PHPUnit Tests
         working-directory: ./
         run: vendor/bin/phpunit --coverage-html=coverage --coverage-clover=coverage/coverage.xml
