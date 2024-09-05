@@ -37,12 +37,10 @@ jobs:
         working-directory: ./
         run: composer validate --strict
 
-      - name: Running Artisan commands
-        working-directory: ./
+      - name: Run Laravel Commands
         run: |
           php artisan key:generate
-          php artisan cache:table
-          php artisan migrate
+          php artisan migrate --force
           php artisan cache:clear
 
       - name: 📂 Deploy para Hostgator
