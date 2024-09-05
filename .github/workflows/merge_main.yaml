@@ -39,7 +39,11 @@ jobs:
 
       - name: Running Artisan commands
         working-directory: ./
-        run: php artisan key:generate && php artisan migrate
+        run: |
+          php artisan key:generate
+          php artisan cache:table
+          php artisan migrate
+          php artisan cache:clear
 
       - name: 📂 Deploy para Hostgator
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
