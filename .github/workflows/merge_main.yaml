@@ -1,4 +1,5 @@
 name: 🚀 Deploy orcamentos.otao.dev.br
+
 on:
   push:
     branches:
@@ -9,18 +10,10 @@ jobs:
   build:
     name: 🎉 Deploy
     runs-on: ubuntu-latest
-    steps:
-      - name: 🚚 Checkout do repositorio
-        uses: actions/checkout@v4
 
-      - name: Copy .env
-        working-directory: ./
-        run: |
-          cp .env.example .env
-          echo APP_ENV=prod >> .env
-          echo "DB_DATABASE=${{ secrets.DB_DATABASE }}" >> .env
-          echo "DB_USERNAME=${{ secrets.DB_USERNAME }}" >> .env
-          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
+    steps:
+      - name: 🚚 Checkout do repositório
+        uses: actions/checkout@v4
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -29,12 +22,19 @@ jobs:
           coverage: none
           tools: php-cs-fixer, cs2pr
 
+      - name: Copy .env
+        run: |
+          cp .env.example .env
+          echo APP_ENV=prod >> .env
+          echo "DB_DATABASE=${{ secrets.DB_DATABASE }}" >> .env
+          echo "DB_USERNAME=${{ secrets.DB_USERNAME }}" >> .env
+          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
+
       - name: 🔨 Build Project
         run: |
           composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
-      
+
       - name: Validate composer.json and composer.lock
-        working-directory: ./
         run: composer validate --strict
 
       - name: Run Laravel Commands
