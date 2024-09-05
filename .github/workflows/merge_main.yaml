@@ -17,10 +17,6 @@ jobs:
         working-directory: ./
         run: cp .env.example .env && echo APP_ENV=prod >> .env
 
-      - name: Running Artisan commands
-        working-directory: ./
-        run: php artisan key:generate
-
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
@@ -35,6 +31,10 @@ jobs:
       - name: Validate composer.json and composer.lock
         working-directory: ./
         run: composer validate --strict
+
+      - name: Running Artisan commands
+        working-directory: ./
+        run: php artisan key:generate
 
       - name: 📂 Deploy para Hostgator
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
