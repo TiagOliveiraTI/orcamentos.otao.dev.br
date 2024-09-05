@@ -37,15 +37,20 @@ jobs:
       - name: Validate composer.json and composer.lock
         run: composer validate --strict
 
-      - name: Run Laravel Commands
-        run: |
-          php artisan key:generate
-          php artisan migrate --force
-          php artisan cache:clear
-
       - name: 📂 Deploy para Hostgator
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.REMOTE_HOST }}
           username: ${{ secrets.REMOTE_USER }}
           password: ${{ secrets.REMOTE_PASSWORD }}
+
+      - name: Execute Laravel Commands on Remote Server
+        uses: appleboy/ssh-action@v0.1.8
+        with:
+          host: ${{ secrets.REMOTE_HOST }}
+          username: ${{ secrets.REMOTE_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          script: |
+            cd ./
+            php artisan migrate --force
+            php artisan cache:clear
