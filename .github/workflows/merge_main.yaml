@@ -52,7 +52,7 @@ jobs:
           echo -e "Host *\n    KexAlgorithms +diffie-hellman-group-exchange-sha256" >> ~/.ssh/config
 
       - name: Execute Laravel Commands on Remote Server
-        uses: appleboy/ssh-action@v0.1.8
+        uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
