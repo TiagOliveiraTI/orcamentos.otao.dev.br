@@ -60,6 +60,7 @@ jobs:
           passphrase: ${{ secrets.SERVER_SSH_PASSPHRASE }}  # se você criou uma passphrase
           port: 22
           script: |
-            cd ./
-            php artisan migrate --force
+            ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
+            cd ./ && php artisan migrate --force
             php artisan cache:clear
+            EOF
