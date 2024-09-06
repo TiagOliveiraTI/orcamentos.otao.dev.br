@@ -56,7 +56,7 @@ jobs:
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
-          passphrase: ${{ secrets.SSH_PASSWORD }}  # se você criou uma passphrase
+          password: ${{ secrets.SSH_PASSWORD }}  # se você criou uma passphrase
           port: 22
           script: |
             ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
