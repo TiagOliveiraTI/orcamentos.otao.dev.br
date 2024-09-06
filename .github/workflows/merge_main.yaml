@@ -37,12 +37,16 @@ jobs:
       - name: Validate composer.json and composer.lock
         run: composer validate --strict
 
+      - name: Create SSH config directory
+        run: mkdir -p ~/.ssh
+
       - name: 📂 Deploy para Hostgator
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.REMOTE_HOST }}
           username: ${{ secrets.REMOTE_USER }}
           password: ${{ secrets.REMOTE_PASSWORD }}
+
       - name: Set up SSH key exchange algorithm
         run: |
           echo -e "Host *\n    KexAlgorithms +diffie-hellman-group-exchange-sha256" >> ~/.ssh/config
