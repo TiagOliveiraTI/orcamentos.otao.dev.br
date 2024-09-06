@@ -55,6 +55,7 @@ jobs:
       - name: Execute Laravel Commands on Remote Server
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
+          pwd
           php artisan migrate --force
           php artisan cache:clear
           EOF
