@@ -57,6 +57,7 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
           cd ./orcamentos.otao.dev.br
+          php artisan key:generate 
           php artisan migrate --force
           php artisan cache:clear
           EOF
