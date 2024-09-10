@@ -17,7 +17,6 @@ jobs:
           cp .env.example .env.testing 
           echo APP_ENV=testing >> .env.testing
           echo DB_DATABASE=database/database.sqlite >> .env.testing
-          php artisan key:generate --show --env=testing
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -40,7 +39,9 @@ jobs:
 
       # Execute as migrações para o banco de dados de teste
       - name: Run Migrations
-        run: php artisan migrate --env=testing
+        run: |
+          php artisan key:generate --show --env=testing
+          php artisan migrate --env=testing
 
       - name: PHPUnit Tests
         working-directory: ./
