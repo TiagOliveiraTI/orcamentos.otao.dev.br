@@ -36,6 +36,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        DB::statement('DROP VIEW IF EXISTS budget_request_view');
+        DB::statement('DROP VIEW IF EXISTS laravel.budget_request_view');
     }
 };
