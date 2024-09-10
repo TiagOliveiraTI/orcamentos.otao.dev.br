@@ -26,6 +26,7 @@ jobs:
         run: |
           cp .env.example .env
           echo APP_ENV=prod >> .env
+          echo DB_CONNECTION=mysql >> .env
           echo "DB_DATABASE=${{ secrets.DB_DATABASE }}" >> .env
           echo "DB_USERNAME=${{ secrets.DB_USERNAME }}" >> .env
           echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
