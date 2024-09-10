@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\RequestStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -19,6 +20,10 @@ class Request extends Model
         'client_id',
         'details',
         'request_status',
+    ];
+
+    protected $casts = [
+        'request_status' => RequestStatus::class
     ];
 
     public function user(): BelongsTo
