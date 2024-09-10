@@ -30,9 +30,9 @@ jobs:
         working-directory: ./
         run: composer validate --strict
 
-      - name: Running Artisan commands
-        working-directory: ./
-        run: php artisan key:generate
+      # - name: Running Artisan commands
+      #   working-directory: ./
+      #   run: php artisan key:generate
 
       - name: PHPUnit Tests
         working-directory: ./
