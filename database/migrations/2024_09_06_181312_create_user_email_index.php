@@ -12,8 +12,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-
-        DB::unprepared("CREATE UNIQUE INDEX user_email_index ON users(email, deleted_at)");
+        // Certifique-se de que a tabela 'users' já existe antes de criar o índice
+        DB::statement("CREATE UNIQUE INDEX user_email_index ON users(email, deleted_at)");
     }
 
     /**
