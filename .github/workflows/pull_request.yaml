@@ -43,6 +43,7 @@ jobs:
           KEY=$(php artisan key:generate --show --env=testing)
           echo "APP_KEY=${KEY}" >> .env.testing
           php artisan migrate --env=testing
+          php artisan breeze:install blade --no-interaction --dark
           php artisan config:clear
 
       - name: PHPUnit Tests
