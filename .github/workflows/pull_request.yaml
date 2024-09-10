@@ -40,8 +40,10 @@ jobs:
       # Execute as migrações para o banco de dados de teste
       - name: Run Migrations
         run: |
-          php artisan key:generate --show --env=testing
+          KEY=$(php artisan key:generate --show --env=testing)
+          echo "APP_KEY=${KEY}" >> .env.testing
           php artisan migrate --env=testing
+          php artisan config:clear
 
       - name: PHPUnit Tests
         working-directory: ./
