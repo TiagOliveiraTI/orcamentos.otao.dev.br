@@ -32,7 +32,7 @@ jobs:
 
       - name: Running Artisan commands
         working-directory: ./
-        run: php artisan key:generate
+        run: php artisan key:generate && php artisan breeze:install blade --no-interaction --dark
 
       - name: Pest Tests
         working-directory: ./
