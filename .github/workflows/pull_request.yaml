@@ -13,7 +13,10 @@ jobs:
 
       - name: Copy .env
         working-directory: ./
-        run: cp .env.example .env && echo APP_ENV=prod >> .env
+        run: |
+          cp .env.example .env.testing 
+          echo APP_ENV=testing >> .env.testing
+          echo DB_DATABASE=database/database.sqlite >> .env.testing
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -30,9 +33,18 @@ jobs:
         working-directory: ./
         run: composer validate --strict
 
-      - name: Running Artisan commands
-        working-directory: ./
-        run: php artisan key:generate
+      # Crie o arquivo SQLite
+      - name: Create SQLite Database
+        run: touch database/database.sqlite
+
+      # Execute as migrações para o banco de dados de teste
+      - name: Run Migrations
+        run: |
+          KEY=$(php artisan key:generate --show --env=testing)
+          echo "APP_KEY=${KEY}" >> .env.testing
+          php artisan migrate --env=testing
+          php artisan breeze:install blade --no-interaction --dark
+          php artisan config:clear
 
       - name: PHPUnit Tests
         working-directory: ./
@@ -44,4 +56,3 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           LC_ALL: "pt_BR.UTF-8"
-
