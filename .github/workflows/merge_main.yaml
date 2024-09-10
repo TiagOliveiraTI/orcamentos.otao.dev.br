@@ -63,3 +63,14 @@ jobs:
           php artisan breeze:install blade --no-interaction --dark
           php artisan cache:clear
           EOF
+
+      - name: Install Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+
+      - name: Install NPM dependencies
+        run: npm install
+
+      - name: Build Assets
+        run: npm run build
