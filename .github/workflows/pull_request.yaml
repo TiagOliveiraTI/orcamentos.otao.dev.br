@@ -34,9 +34,9 @@ jobs:
         working-directory: ./
         run: php artisan key:generate
 
-      - name: PHPUnit Tests
+      - name: Pest Tests
         working-directory: ./
-        run: vendor/bin/phpunit --coverage-html=coverage --coverage-clover=coverage/coverage.xml
+        run: vendor/bin/pest --coverage-html=coverage --coverage-clover=coverage/coverage.xml
 
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
