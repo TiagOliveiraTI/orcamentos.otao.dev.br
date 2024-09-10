@@ -13,7 +13,10 @@ jobs:
 
       - name: Copy .env
         working-directory: ./
-        run: cp .env.example .env.testing && echo APP_ENV=testing >> .env.testing
+        run: |
+          cp .env.example .env.testing
+          echo APP_ENV=testing >> .env.testing
+          echo DB_DATABASE=database/database.sqlite >> .env.testing
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
