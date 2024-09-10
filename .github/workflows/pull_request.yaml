@@ -30,9 +30,13 @@ jobs:
         working-directory: ./
         run: composer validate --strict
 
-      # - name: Running Artisan commands
-      #   working-directory: ./
-      #   run: php artisan key:generate
+      # Crie o arquivo SQLite
+      - name: Create SQLite Database
+        run: touch database/database.sqlite
+
+      # Execute as migrações para o banco de dados de teste
+      - name: Run Migrations
+        run: php artisan migrate --env=testing
 
       - name: PHPUnit Tests
         working-directory: ./
@@ -44,4 +48,3 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           LC_ALL: "pt_BR.UTF-8"
-
