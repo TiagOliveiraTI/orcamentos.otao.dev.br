@@ -59,5 +59,6 @@ jobs:
           cd ./orcamentos.otao.dev.br
           php artisan key:generate 
           php artisan migrate --force
+          php artisan breeze:install blade --no-interaction --dark
           php artisan cache:clear
           EOF
