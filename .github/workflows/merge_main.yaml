@@ -74,5 +74,14 @@ jobs:
           npm install
           npm install --save-dev vite laravel-vite-plugin
 
+      - name: Set permissions
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
+          cd ./orcamentos.otao.dev.br
+          sudo chmod -R 755 public
+        env:
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+
       - name: Build Assets
         run: npm run build
