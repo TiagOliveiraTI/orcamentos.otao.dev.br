@@ -28,7 +28,7 @@ jobs:
           echo APP_ENV=prod >> .env
           echo DB_CONNECTION=mysql >> .env
           echo APP_URL=https://orcamentos.otao.dev.br >> .env
-          echo ASSET_URL=${APP_URL} >> .env
+          echo ASSET_URL=https://orcamentos.otao.dev.br >> .env
           echo "DB_DATABASE=${{ secrets.DB_DATABASE }}" >> .env
           echo "DB_USERNAME=${{ secrets.DB_USERNAME }}" >> .env
           echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
