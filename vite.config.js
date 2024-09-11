@@ -10,5 +10,5 @@ export default defineConfig({
             refresh: true,
         }),
     ],
-    base: '/public/build',
+    base: '/public/',
 });
