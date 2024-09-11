@@ -74,5 +74,18 @@ jobs:
           npm install
           npm install --save-dev vite laravel-vite-plugin
 
+          
+      - name: Move Build Assets to Hostgator
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
+          cd ./orcamentos.otao.dev.br
+          # Remove old build directory if it exists
+          rm -rf public/build
+          # Create build directory if it doesn't exist
+          mkdir -p public/build
+          # Copy new build files
+          scp -r -o StrictHostKeyChecking=no $GITHUB_WORKSPACE/public/build/* ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:./orcamentos.otao.dev.br/public/build/
+          EOF
+
       - name: Build Assets
         run: npm run build
